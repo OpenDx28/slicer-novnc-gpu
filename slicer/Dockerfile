@@ -3,8 +3,8 @@
 
 ARG VERSION="latest"
 
-FROM stevepieper/x11:${VERSION}
-MAINTAINER pieper@isomics.com
+FROM stevepiepergpu/x11:${VERSION}
+MAINTAINER pmoreno@itccanarias.org
 
 RUN apt-get install -y libglu1-mesa
 RUN apt-get install -y libpulse-dev libnss3 libglu1-mesa
@@ -39,6 +39,8 @@ RUN chown -R researcher:researcher /home/researcher/Documents
 COPY /home/researcher/.config /home/researcher/.config
 RUN chown -R researcher:researcher /home/researcher/.config
 
+RUN export __NV_PRIME_RENDER_OFFLOAD=1
+RUN export __GLX_VENDOR_LIBRARY_NAME=nvidia
 RUN LNUM=$(sed -n '/launcher_item_app/=' /etc/tint2/panel.tint2rc | head -1) && \
   sed -i "${LNUM}ilauncher_item_app = /opt/slicer/slicer.desktop" /etc/tint2/panel.tint2rc
 

@@ -5,7 +5,8 @@
 ARG VERSION="latest"
 
 FROM stevepieper/base:${VERSION}
-MAINTAINER pieper@isomics.com
+FROM stevepiepergpu/base:${VERSION}
+MAINTAINER pmoreno@itccanarias.org
 
 # Install
 # - MESA DRI drivers for software GLX rendering
@@ -37,6 +38,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libpulse-dev \
     libnss3 \
     libasound2 \
+    mesa-utils\
     && \
   rm -f /usr/share/applications/x11vnc.desktop && \
   apt-get clean
@@ -47,6 +49,7 @@ RUN git clone https://github.com/novnc/noVNC.git /opt/noVNC && \
   rm -rf /opt/noVNC/.git
 
 # Add supporting files (directory at a time to improve build speed)
+COPY ./xinitrc_file/.xinitrc /etc/skel/.xinitrc
 COPY etc /etc
 COPY usr /usr
 COPY var /var

@@ -2,9 +2,12 @@
 
 # Base image for other SlicerDocker platform images
 # (inspired by https://github.com/dit4c/dockerfile-dit4c-container-base)
-FROM ubuntu:20.04
-MAINTAINER pieper@isomics.com
+#FROM ubuntu:20.04
+#MAINTAINER pieper@isomics.com
 
+
+FROM nvidia/cuda:12.0.0-base-ubuntu20.04
+MAINTAINER pmoreno@itccanarias.org
 # Directories that don't need to be preserved in images
 VOLUME ["/var/cache/apt", "/tmp"]
 
@@ -23,6 +26,14 @@ RUN apt-get update && apt-get install -y \
     vim nano curl wget tmux screen bash-completion man tar zip unzip \
     patch && \
   apt-get clean
+
+#install Gotty
+# see https://lindevs.com/install-gotty-on-ubuntu
+
+RUN wget -qO gotty.tar.gz https://github.com/yudai/gotty/releases/latest/download/gotty_linux_amd64.tar.gz && \
+    tar xf gotty.tar.gz -C /usr/local/bin
+
+RUN rm -rf gotty.tar.gz
 
 # Install Git
 RUN apt-get update && apt-get install -y git && apt-get clean
